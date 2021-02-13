@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
-{
-    SpawnPoint[] m_spawnPoints;
-
-    
+{   
     public static SpawnManager Instance;
-
+ 
+    SpawnPoint[] m_spawnPoints;
+    
     private void Awake()
     {
         #region Singleton Pattern

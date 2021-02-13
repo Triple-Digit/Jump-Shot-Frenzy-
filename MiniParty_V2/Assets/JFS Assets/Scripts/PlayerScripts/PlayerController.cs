@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourPunCallbacks
 {
     [Header("Player Holder")]
     [SerializeField] GameObject m_playerBody;
@@ -35,35 +35,40 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float m_fireRate = 0f;
     [SerializeField] int m_roundsPerClip = 1;
     int m_roundsRemaining;
+    float m_currentHealth;
+    [SerializeField] float m_maxHealth = 1f;
 
 
-
+    
     PhotonView m_photonView;
     bool m_OfflineMode;
-
+    PlayerManager m_playerManager;
     
 
     private void Awake()
     {
         m_photonView = GetComponent<PhotonView>();
         m_body = GetComponent<Rigidbody2D>();
+        m_playerManager = PhotonView.Find((int)m_photonView.InstantiationData[0]).GetComponent<PlayerManager>();
+        m_currentHealth = m_maxHealth;
     }
 
 
     private void Start()
     {
-        //if(!m_photonView.IsMine)
+        if(!m_photonView.IsMine)
         {
-            //Destroy(m_body);
+            Destroy(m_body);
         }
     }
     private void Update()
     {
-        //if (!m_photonView.IsMine || !m_OfflineMode) return;
+        if (!m_photonView.IsMine) return;
         m_grounded = Physics2D.OverlapCircle(m_groundCheckPosition.position, m_groundCheckRadius, m_groundLayers);
         MovePlayer();
         Jump();
         FrontFlip();
+        Shoot();
     }
 
     void MovePlayer()
@@ -128,9 +133,8 @@ public class PlayerController : MonoBehaviour
 
     void Shoot()
     {
-        if(m_roundsRemaining > 0)
-        {
-            m_roundsRemaining -= 1;
+        if(!m_grounded && Input.GetKeyDown(KeyCode.Mouse0))
+        {            
             GameObject bullet = PhotonNetwork.Instantiate(m_bulletPrefab.name, m_shootingPoint.position, m_playerBody.gameObject.transform.rotation);
         }        
     }
@@ -139,6 +143,42 @@ public class PlayerController : MonoBehaviour
     {
         if (m_groundCheckPosition == null) return;
         Gizmos.DrawWireSphere(m_groundCheckPosition.position, m_groundCheckRadius);
+    }
+
+    public void Die()
+    {
+        m_photonView.RPC("RPC_Die", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void RPC_Die()
+    {
+        if (!m_photonView) return;
+
+    }
+
+    [PunRPC]
+    public void RPC_TakeDamage(float amount)
+    {
+        if (!m_photonView) return;
+        TakeDamage(amount);
+
+    }
+
+    void TakeDamage(float amount)
+    {
+        if(m_photonView.IsMine)
+        {
+            m_currentHealth -= amount;
+        }
+    }
+
+    void CheckHealth()
+    {
+        if(photonView.IsMine && m_currentHealth <=0)
+        {
+            m_photonView.RPC("Die", RpcTarget.AllBuffered);
+        }
     }
 
 }
