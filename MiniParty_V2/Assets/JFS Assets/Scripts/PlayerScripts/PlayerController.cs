@@ -9,15 +9,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] GameObject m_playerBody;
 
     [Header("Movement Variables")]
-    [SerializeField] float m_moveSpeed = 5f;
-    [SerializeField] float m_jumpForce = 3f;
+    [SerializeField] float m_moveSpeed = 5f;    
     bool m_facingRight = true;
     float m_direction = 1f;
-
     float m_input;
     Rigidbody2D m_body;
 
     [Header("Jump Variables")]
+    [SerializeField] float m_jumpForce = 3f;
     [SerializeField] Transform m_groundCheckPosition;
     [SerializeField] float m_groundCheckRadius = 1f;
     [SerializeField] LayerMask m_groundLayers;
@@ -50,7 +49,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         m_photonView = GetComponent<PhotonView>();
         m_body = GetComponent<Rigidbody2D>();
         m_playerManager = PhotonView.Find((int)m_photonView.InstantiationData[0]).GetComponent<PlayerManager>();
-        m_currentHealth = m_maxHealth;
+        m_currentHealth = m_maxHealth;        
     }
 
 
@@ -61,14 +60,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
             Destroy(m_body);
         }
     }
-    private void Update()
+    private void FixedUpdate()
     {
         if (!m_photonView.IsMine) return;
         m_grounded = Physics2D.OverlapCircle(m_groundCheckPosition.position, m_groundCheckRadius, m_groundLayers);
-        MovePlayer();
-        Jump();
+        MovePlayer();        
         FrontFlip();
         Shoot();
+    }
+
+    private void Update()
+    {
+        Jump();
     }
 
     void MovePlayer()
@@ -94,7 +97,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         
         if (m_flipping)
         {
-            m_rotationAngle -= Time.deltaTime * 360 * m_rotationSpeed;
+            m_rotationAngle -= Time.deltaTime * 360 * m_rotationSpeed * m_direction;
         }
 
         else
@@ -103,11 +106,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 if (m_rotationAngle > -100)
                 {
-                    m_rotationAngle += Time.deltaTime * 360 * m_resetOrientationSpeed;
+                    m_rotationAngle += Time.deltaTime * 360 * m_resetOrientationSpeed * m_direction;
                 }
                 if (m_rotationAngle < -90)
                 {
-                    m_rotationAngle -= Time.deltaTime * 360 * m_resetOrientationSpeed;
+                    m_rotationAngle -= Time.deltaTime * 360 * m_resetOrientationSpeed * m_direction;
                 }
             }
             else
@@ -132,10 +135,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
 
     void Shoot()
-    {
-        if(!m_grounded && Input.GetKeyDown(KeyCode.Mouse0))
+    {        
+        if (!m_grounded && Input.GetKeyDown(KeyCode.Mouse0))
         {            
-            GameObject bullet = PhotonNetwork.Instantiate(m_bulletPrefab.name, m_shootingPoint.position, m_playerBody.gameObject.transform.rotation);
+            GameObject bullet = PhotonNetwork.Instantiate(m_bulletPrefab.name, new Vector2(m_shootingPoint.position.x, m_shootingPoint.position.y), m_playerBody.gameObject.transform.rotation, 0);
         }        
     }
 

@@ -282,7 +282,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Find PARTY
+  m_text: Find Lobby
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0c634eac344efeb459ff3570bc2f683d, type: 2}
   m_sharedMaterial: {fileID: 1173907574330907489, guid: 0c634eac344efeb459ff3570bc2f683d, type: 2}
@@ -3831,7 +3831,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Host PARTY
+  m_text: Host Lobby
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0c634eac344efeb459ff3570bc2f683d, type: 2}
   m_sharedMaterial: {fileID: 1173907574330907489, guid: 0c634eac344efeb459ff3570bc2f683d, type: 2}
@@ -3858,7 +3858,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70.45
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5428,7 +5428,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Join PARTY
+  m_text: Join Lobby
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0c634eac344efeb459ff3570bc2f683d, type: 2}
   m_sharedMaterial: {fileID: 1173907574330907489, guid: 0c634eac344efeb459ff3570bc2f683d, type: 2}
@@ -5717,7 +5717,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: m!ni PARTY
+  m_text: Jump Shot Frenzy
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0c634eac344efeb459ff3570bc2f683d, type: 2}
   m_sharedMaterial: {fileID: 1173907574330907489, guid: 0c634eac344efeb459ff3570bc2f683d, type: 2}

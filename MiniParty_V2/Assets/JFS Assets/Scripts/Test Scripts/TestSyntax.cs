@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ public class TestSyntax : MonoBehaviour
     public float speed = 1f;
     public float fullSpeed = 10f;
 
+    [Header("Timer")]
+    public float timer = 0.0f;
+
     private void Start()
     {
         rBody.velocity = transform.right * speed * Time.deltaTime;
@@ -22,8 +26,9 @@ public class TestSyntax : MonoBehaviour
 
 
     private void Update()
-    {   
-        Rotation();
+    {
+        //Rotation();
+        Timer();
     }
 
     void Rotation()
@@ -63,5 +68,16 @@ public class TestSyntax : MonoBehaviour
 
     }
 
+    int Timer()
+    {
+        if (timer > 0)
+        {
+            timer -= Time.deltaTime;
+        }
+
+        int seconds = Convert.ToInt32(timer);
+        Debug.Log(seconds);
+        return seconds;
+    }
 
 }

@@ -14,7 +14,7 @@ public class BulletPhysics : MonoBehaviourPunCallbacks
     private void Awake()
     {
         m_photonView = GetComponent<PhotonView>();
-        m_rigidbody2D.velocity = transform.right * m_bulletSpeed * Time.deltaTime;
+        
     }
        
 
@@ -31,6 +31,11 @@ public class BulletPhysics : MonoBehaviourPunCallbacks
             }
             this.GetComponent<PhotonView>().RPC("DestroyBullet", RpcTarget.AllBuffered);
         }
+    }
+
+    private void Update()
+    {
+        transform.Translate(Vector3.right * m_bulletSpeed * Time.deltaTime);
     }
 
     [PunRPC]

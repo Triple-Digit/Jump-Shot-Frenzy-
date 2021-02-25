@@ -109,9 +109,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void JoinRoom(RoomInfo info)
     {
         PhotonNetwork.JoinRoom(info.Name);
-        MenuManager.instance.OpenMenu("Loading");
-
-        
+        MenuManager.instance.OpenMenu("Loading");        
     }
 
     public override void OnLeftRoom()

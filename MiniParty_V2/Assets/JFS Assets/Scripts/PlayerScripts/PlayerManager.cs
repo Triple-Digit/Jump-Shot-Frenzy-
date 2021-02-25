@@ -4,18 +4,19 @@ using UnityEngine;
 using Photon.Pun;
 using System.IO;
 
+
 public class PlayerManager : MonoBehaviour
 {
-    PhotonView m_photonView;
+    [SerializeField] PhotonView m_photonView;
     GameObject m_controller;
 
     private void Awake()
     {
         m_photonView = GetComponent<PhotonView>();
+        GameManager.AddActivePlayer(this);
     }
 
-
-    void Start()
+    private void Start()
     {
         if(m_photonView.IsMine)
         {
@@ -32,9 +33,11 @@ public class PlayerManager : MonoBehaviour
     public void Die()
     {
         PhotonNetwork.Destroy(m_controller);
+        GameManager.RemoveActivePlayer(this);
         CreateController();
     }
 
- 
-   
+    
+
+
 }
